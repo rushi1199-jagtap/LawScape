@@ -1,0 +1,27 @@
+Folder PATH listing for volume New Volume
+Volume serial number is 00000077 380B:A305
+D:.
++---data
+|   +---external
+|   +---interim
+|   +---processed
+|   \---raw
++---docs
++---experiments
++---models
++---notebooks
++---outputs
++---scripts
++---src
+|   +---api
+|   +---config
+|   +---dashboard
+|   +---explainability
+|   +---graph_builder
+|   +---graph_storage
+|   +---ontology
+|   +---preprocessing
+|   +---reasoning
+|   +---temporal
+|   \---utils
+\---tests

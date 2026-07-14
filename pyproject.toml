@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lawscape"
+version = "0.1.0"
+description = "LawScape - A Temporal Heterogeneous Graph Framework for Explainable Legal Intelligence"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    {name = "Rushikesh Jagtap"}
+]
+
+dependencies = [
+    "networkx"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: lawscape
+Version: 0.1.0
+Summary: LawScape - A Temporal Heterogeneous Graph Framework for Explainable Legal Intelligence
+Author: Rushikesh Jagtap
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: networkx
+Dynamic: license-file

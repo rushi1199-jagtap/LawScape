@@ -10,6 +10,8 @@ Project: LawScape
 from typing import Any
 import networkx as nx
 
+from lawscape.graph.graph_validator import GraphValidator
+
 
 class LawGraphBuilder:
     """
@@ -18,6 +20,11 @@ class LawGraphBuilder:
 
     def __init__(self):
         self.graph = nx.MultiDiGraph()
+        self.validator = GraphValidator()
+
+    # ---------------------------------------------------------
+    # Node Operations
+    # ---------------------------------------------------------
 
     def add_node(
         self,
@@ -26,14 +33,30 @@ class LawGraphBuilder:
         **properties: Any
     ) -> None:
         """
-        Add a legal entity to the graph.
+        Add a legal entity after validation.
         """
+
+        node_data = {
+            "node_id": node_id,
+            "entity_type": entity_type,
+            **properties,
+        }
+
+        if not self.validator.validate_node(node_data):
+            raise ValueError(f"Invalid node: {node_id}")
+
+        if self.validator.validate_duplicate_node(self.graph, node_id):
+            raise ValueError(f"Duplicate node: {node_id}")
 
         self.graph.add_node(
             node_id,
             entity_type=entity_type,
             **properties
         )
+
+    # ---------------------------------------------------------
+    # Edge Operations
+    # ---------------------------------------------------------
 
     def add_edge(
         self,
@@ -43,8 +66,18 @@ class LawGraphBuilder:
         **properties: Any
     ) -> None:
         """
-        Add a relationship between two legal entities.
+        Add a legal relationship after validation.
         """
+
+        if not self.validator.validate_edge(
+            self.graph,
+            source,
+            target,
+            relationship,
+        ):
+            raise ValueError(
+                f"Invalid relationship: {source} -> {target}"
+            )
 
         self.graph.add_edge(
             source,
@@ -53,11 +86,11 @@ class LawGraphBuilder:
             **properties
         )
 
-    def get_graph(self) -> nx.MultiDiGraph:
-        """
-        Return the complete graph.
-        """
+    # ---------------------------------------------------------
+    # Utility Methods
+    # ---------------------------------------------------------
 
+    def get_graph(self) -> nx.MultiDiGraph:
         return self.graph
 
     def number_of_nodes(self) -> int:
@@ -67,8 +100,4 @@ class LawGraphBuilder:
         return self.graph.number_of_edges()
 
     def clear(self) -> None:
-        """
-        Remove all nodes and edges.
-        """
-
         self.graph.clear()

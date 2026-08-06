@@ -27,6 +27,7 @@ class LegalEntityType(str, Enum):
     ARTICLE = "Article"
     ACT = "Act"
     CHAPTER = "Chapter"
+    PART = "Part"
     SECTION = "Section"
     SUBSECTION = "Subsection"
     RULE = "Rule"

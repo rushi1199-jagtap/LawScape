@@ -24,6 +24,25 @@ class ConstitutionGraphBuilder:
         self.graph_builder = graph_builder
 
     # ---------------------------------------------------------
+    # Constitution Operations
+    # ---------------------------------------------------------
+
+    def add_constitution(self) -> str:
+        """
+        Add the Constitution as the root graph node.
+        """
+
+        node_id = "CONSTITUTION"
+
+        self.graph_builder.add_node(
+            node_id=node_id,
+            entity_type=LegalEntityType.CONSTITUTION.value,
+            title="Constitution of India",
+        )
+
+        return node_id
+
+    # ---------------------------------------------------------
     # Part Operations
     # ---------------------------------------------------------
 
@@ -63,6 +82,7 @@ class ConstitutionGraphBuilder:
             title=f"Article {article.article_number}",
             article_number=article.article_number,
             content=article.content,
+            part_number=article.part_number,
         )
 
         return node_id
@@ -71,13 +91,29 @@ class ConstitutionGraphBuilder:
     # Relationship Operations
     # ---------------------------------------------------------
 
+    def connect_constitution_part(
+        self,
+        part: LegalPart,
+    ) -> None:
+        """
+        Create a contains relationship between
+        Constitution and Part.
+        """
+
+        self.graph_builder.add_edge(
+            source="CONSTITUTION",
+            target=f"PART_{part.part_number}",
+            relationship="contains",
+        )
+
     def connect_part_article(
         self,
         part: LegalPart,
         article: LegalArticle,
     ) -> None:
         """
-        Create a contains relationship between Part and Article.
+        Create a contains relationship between
+        Part and Article.
         """
 
         part_id = f"PART_{part.part_number}"
@@ -102,9 +138,16 @@ class ConstitutionGraphBuilder:
         Build the Constitution graph from structured data.
         """
 
+        # Add Constitution root node
+        self.add_constitution()
+
         # Add all Parts
         for part in parts:
             self.add_part(part)
+
+        # Connect Constitution to Parts
+        for part in parts:
+            self.connect_constitution_part(part)
 
         # Add all Articles
         for article in articles:

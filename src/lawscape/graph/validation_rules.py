@@ -14,6 +14,7 @@ from lawscape.ontology.relationship_types import LegalRelationshipType
 VALID_RELATIONSHIPS = {
     LegalEntityType.CONSTITUTION.value: {
         LegalRelationshipType.CONTAINS.value: {
+            LegalEntityType.PART.value,
             LegalEntityType.ARTICLE.value,
             LegalEntityType.CHAPTER.value,
         },
